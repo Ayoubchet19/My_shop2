@@ -1,6 +1,6 @@
-# 🛍️ My Shop (Angular + Material + Tailwind + NgRx)
+# 🛍️ My Shop (Angular + Material + Tailwind + Signals)
 
-A modern Angular application featuring **product listing**, **rating display**, **authentication**, **shopping cart**, and **checkout flow** — built with **Angular 20**, **Material UI**, **TailwindCSS**, **NgRx Store**, and **Storybook**.
+A modern Angular application featuring **product listing**, **rating display**, **authentication**, **shopping cart**, and **checkout flow** — built with **Angular 20**, **Material UI**, **TailwindCSS**, **Signals-based state**, and **Storybook**.
 
 ---
 
@@ -8,13 +8,13 @@ A modern Angular application featuring **product listing**, **rating display**, 
 
 - 🧩 **Standalone Angular Components**
 - 🎨 **Angular Material** + **TailwindCSS** styling
-- 🔁 **Signals**, `@defer`, and modern Angular template syntax (`@if`, `@for`, `@let`)
+- 🔁 **Angular Signals**, `@defer`, and modern template syntax (`@if`, `@for`, `@let`)
 - 📦 **Products List** with pagination, sorting, and rating
 - 💬 **ProductCard** and **ProductsList** (Storybook-ready presentational components)
 - 🔐 **Authentication system** (login/logout with token storage)
 - ⚙️ **Reactive services** with RxJS and BehaviorSubjects
 - 🔄 **HTTP Interceptors** for token handling and refresh logic (optional)
-- 🛒 **Shopping Cart** with add/remove/update quantity, badge icon
+- 🛒 **Shopping Cart** (signals store) with add/remove/update quantity & header badge
 - 💾 **Cart Persistence** via localStorage hydration
 - 🧾 **Checkout Flow** (summary → address → confirmation)
 - 🔍 **Product Details Page** with Add to Cart
@@ -24,7 +24,7 @@ A modern Angular application featuring **product listing**, **rating display**, 
 
 ## 🧰 Tech Stack
 
-- **Angular 18+**
+- **Angular 20 (standalone + signals)**
 - **RxJS**
 - **Angular Material**
 - **TailwindCSS**
@@ -67,7 +67,7 @@ Then open [http://localhost:6006](http://localhost:6006) to view the UI componen
 src/
 ├── app/
 │   ├── services/          # Products & Auth services
-│   ├── state/cart/        # NgRx cart slice (actions, reducer, selectors, persistence)
+│   ├── state/cart/        # Signals cart store (actions, reducer, selectors, persistence)
 │   ├── shop/cart/         # Cart UI components (icon, page, summary, item)
 │   ├── shop/product-details/ # Product details page component
 │   ├── shop/checkout/     # Checkout step components
@@ -120,7 +120,7 @@ interface CartState {
 
 Selectors: `selectCartItems`, `selectCartTotal`, `selectCartCount`.
 
-Persistence: `CartPersistenceService` hydrates from `localStorage` key `cartItems` and persists on changes.
+Persistence: localStorage hydration & persistence via the cart store service.
 
 Checkout: Uses MSW mocks (`/api/cart/validate/`, `/api/order/`). Step3 clears cart after successful order.
 
@@ -138,11 +138,12 @@ Checkout: Uses MSW mocks (`/api/cart/validate/`, `/api/order/`). Step3 clears ca
 
 ## 🔄 Future Enhancements (Ideas)
 
-- Coupon codes & discount application
-- Stock indicator & disable Add to Cart when out-of-stock
+- Coupon codes & discounts
+- Stock indicator & disable button when out-of-stock
 - Toast notifications on add/remove
-- Wish list feature
+- Wish list / favorites
 - Animations for cart transitions
+- Optional NgRx migration (replace signals store)
 
 Run Storybook to preview reusable UI blocks visually.
 
@@ -150,15 +151,49 @@ Run Storybook to preview reusable UI blocks visually.
 
 ## 🧹 Scripts
 
-| Command             | Description          |
-| ------------------- | -------------------- |
-| `npm start`         | Run dev server       |
-| `npm run build`     | Build for production |
-| `npm run storybook` | Launch Storybook     |
-| `npm run test`      | Run unit tests       |
+| Command             | Description               |
+| ------------------- | ------------------------- |
+| `npm start`         | Run dev server            |
+| `npm run build`     | Build for production      |
+| `npm run storybook` | Launch Storybook          |
+| `npm run test`      | Run unit tests (Karma)    |
+| `npm run lint`      | Lint code (if configured) |
+
+## ✅ CI (optional)
+
+Add a GitHub Actions workflow to automatically run install, build & tests on each push:
+
+```yaml
+name: CI
+on: [push, pull_request]
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test --if-present -- --watch=false
+```
 
 ---
 
 ## 🧡 Author
 
 Made with Angular, Material & Tailwind — for modern frontend development.
+
+---
+
+### 📄 License
+
+MIT License © 2025 Ayoubchet19
+
+---
+
+### 🙌 Contributing
+
+PRs welcome! Please open an issue first for significant changes.
