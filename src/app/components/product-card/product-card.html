@@ -1,0 +1,23 @@
+<mat-card
+  class="p-6 w-80 mx-auto rounded-3xl shadow-md hover:shadow-xl transition-all border border-gray-100 bg-white/90 backdrop-blur"
+>
+  <div class="flex justify-between items-center mb-3">
+    <h3 class="text-lg font-semibold truncate text-slate-800">{{ name }}</h3>
+    <span class="text-sm text-slate-500">{{ created_at | date: 'mediumDate' }}</span>
+  </div>
+
+  <div class="flex items-center mb-4">
+    @for (star of stars; track $index) {
+      <mat-icon
+        class="text-amber-400"
+        [class.opacity-30]="star > avgRating"
+        fontIcon="star"
+      ></mat-icon>
+    }
+    <span class="ml-2 text-sm text-slate-600">{{ avgRating.toFixed(1) }}/5</span>
+  </div>
+
+  <div class="text-center">
+    <p class="text-2xl font-bold text-indigo-600">{{ price | currency: 'USD' }}</p>
+  </div>
+</mat-card>

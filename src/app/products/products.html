@@ -1,0 +1,64 @@
+@let products = products$ | async;
+<div class="flex items-center justify-between py-2">
+  <h2 class="text-lg font-semibold m-0">Products</h2>
+  <a routerLink="/" class="btn-nav-secondary">Retour à l'accueil</a>
+</div>
+<div class="flex items-center justify-end py-2">
+  <div class="space-x-2">
+    <button
+      mat-stroked-button
+      color="primary"
+      [disabled]="viewMode() === 'grid'"
+      (click)="setView('grid')"
+    >
+      Grid
+    </button>
+    <button
+      mat-stroked-button
+      color="primary"
+      [disabled]="viewMode() === 'table'"
+      (click)="setView('table')"
+    >
+      Table
+    </button>
+  </div>
+</div>
+
+@defer (when products) {
+  @if (products) {
+    @if (viewMode() === 'grid') {
+      <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        @for (p of products.results; track p.id) {
+          <a [routerLink]="'/products/' + p.id" class="block no-underline">
+            <app-product-card
+              [name]="p.name"
+              [price]="p.price"
+              [created_at]="p.created_at"
+              [avgRating]="p._avg || 0"
+            />
+          </a>
+        }
+      </div>
+    } @else {
+      <app-products-list
+        [products]="products"
+        [ordering]="ordering()"
+        (orderingChange)="onOrderingChange($event)"
+        (pageChange)="onPageChange($event)"
+      ></app-products-list>
+    }
+  }
+} @placeholder {
+  <mat-card class="p-4 text-gray-500 text-center">
+    <p>Loading product list...</p>
+  </mat-card>
+} @loading {
+  <div class="flex justify-center p-10">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+}
+
+<mat-divider></mat-divider>
+<div class="p-4 flex justify-center">
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,20 @@
+@let rating = rating$ | async;
+
+@defer (when rating) {
+  @if (rating) {
+    <app-product-card
+      [name]="'Sample Product Name'"
+      [price]="42.99"
+      [created_at]="'2025-11-12T10:00:00Z'"
+      [avgRating]="rating.avg_rating"
+    />
+  }
+} @placeholder {
+  <mat-card class="p-6 text-gray-500 text-center">
+    <p>Preparing rating info...</p>
+  </mat-card>
+} @loading {
+  <div class="flex justify-center p-10">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+}
