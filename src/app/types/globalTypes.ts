@@ -11,6 +11,8 @@ export interface IProduct {
   owner_id: number;
   ratings: IProductRating[];
   _avg: number;
+  stock: number;
+  lowStockThreshold: number;
 }
 
 export interface IProducts {

@@ -20,4 +20,22 @@
   <div class="text-center">
     <p class="text-2xl font-bold text-indigo-600">{{ price | currency: 'USD' }}</p>
   </div>
+  <div class="mt-2 text-sm">
+    @if (stock === 0) {
+      <span class="text-red-600">Rupture de stock</span>
+    } @else if (stock <= lowStockThreshold) {
+      <span class="text-amber-600">Plus que {{ stock }} en stock</span>
+    } @else {
+      <span class="text-green-700">En stock</span>
+    }
+  </div>
+  <div class="mt-4 flex justify-end">
+    <button
+      (click)="onToggle($event)"
+      aria-label="Ajouter à la wishlist"
+      class="inline-flex items-center rounded-full px-3 py-1 text-pink-600 border border-pink-300 hover:bg-pink-50"
+    >
+      <mat-icon fontIcon="favorite"></mat-icon>
+    </button>
+  </div>
 </mat-card>

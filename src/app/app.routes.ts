@@ -1,4 +1,8 @@
 import { Routes } from '@angular/router';
+import { AccountOrderDetailComponent } from './account/account-order-detail.component';
+import { AccountOrdersComponent } from './account/account-orders.component';
+import { AccountProfileComponent } from './account/account-profile.component';
+// Lazy-load AdminDashboard via loadComponent for performance
 import { AppPlaceholderComponent } from './app-placeholder.component';
 import { Auth } from './auth/auth';
 import { DevAuthComponent } from './dev/dev-auth.component';
@@ -15,6 +19,7 @@ import { CheckoutStep1SummaryComponent } from './shop/checkout/step1-summary.com
 import { CheckoutStep2AddressComponent } from './shop/checkout/step2-address.component';
 import { CheckoutStep3ConfirmComponent } from './shop/checkout/step3-confirm.component';
 import { ProductDetailsPageComponent } from './shop/product-details/product-details-page.component';
+import { WishlistPageComponent } from './wishlist/wishlist-page.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -35,6 +40,7 @@ export const routes: Routes = [
     ],
   },
   { path: 'cart', canActivate: [authGuard], component: CartPageComponent },
+  { path: 'wishlist', canActivate: [authGuard], component: WishlistPageComponent },
   {
     path: 'checkout',
     canActivate: [authGuard],
@@ -44,6 +50,23 @@ export const routes: Routes = [
       { path: 'step3', component: CheckoutStep3ConfirmComponent },
       { path: '', pathMatch: 'full', redirectTo: 'step1' },
     ],
+  },
+
+  {
+    path: 'account',
+    canActivate: [authGuard],
+    children: [
+      { path: 'profile', component: AccountProfileComponent },
+      { path: 'orders', component: AccountOrdersComponent },
+      { path: 'orders/:id', component: AccountOrderDetailComponent },
+    ],
+  },
+
+  // Admin dashboard (read-only); can be guarded or public for demo
+  {
+    path: 'admin/dashboard',
+    loadComponent: () =>
+      import('./admin/admin-dashboard.component').then((m) => m.AdminDashboardComponent),
   },
 
   { path: '**', redirectTo: '' },

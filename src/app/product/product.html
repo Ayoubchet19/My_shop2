@@ -3,10 +3,13 @@
 @defer (when rating) {
   @if (rating) {
     <app-product-card
+      [id]="1"
       [name]="'Sample Product Name'"
       [price]="42.99"
       [created_at]="'2025-11-12T10:00:00Z'"
       [avgRating]="rating.avg_rating"
+      [stock]="10"
+      [lowStockThreshold]="5"
     />
   }
 } @placeholder {

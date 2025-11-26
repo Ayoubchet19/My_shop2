@@ -3,8 +3,27 @@
     <a routerLink="/" class="brand-link" aria-label="Go to home">My Shop</a>
 
     <span class="flex items-center gap-4">
-      <app-cart-icon></app-cart-icon>
       @if (isAuthenticated()) {
+        
+        <a
+          routerLink="/products"
+          class="inline-flex items-center rounded-lg px-3 py-2 font-medium text-white focus:outline-none focus:ring transition-colors bg-emerald-600 hover:bg-emerald-700"
+        >
+          Produits
+        </a>
+        <a
+          routerLink="/wishlist"
+          class="inline-flex items-center rounded-lg px-3 py-2 font-medium text-white focus:outline-none focus:ring transition-colors bg-rose-600 hover:bg-rose-700"
+        >
+          Wishlist
+        </a>
+        <a
+          routerLink="/account/profile"
+          class="inline-flex items-center rounded-lg px-4 py-2 font-medium text-white focus:outline-none focus:ring transition-colors bg-pink-600 hover:bg-pink-700"
+        >
+          Mon compte
+        </a>
+        <app-cart-icon></app-cart-icon>
         <button
           type="button"
           (click)="logout()"

@@ -31,10 +31,13 @@
         @for (p of products.results; track p.id) {
           <a [routerLink]="'/products/' + p.id" class="block no-underline">
             <app-product-card
+              [id]="p.id"
               [name]="p.name"
               [price]="p.price"
               [created_at]="p.created_at"
               [avgRating]="p._avg || 0"
+              [stock]="p.stock"
+              [lowStockThreshold]="p.lowStockThreshold"
             />
           </a>
         }

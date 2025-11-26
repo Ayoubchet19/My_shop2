@@ -13,6 +13,9 @@ export class CartStore {
   readonly selectCartItems = computed<CartItem[]>(() => this._state().items);
   readonly selectCartTotal = computed<number>(() => this._state().totalPrice);
   readonly selectCartCount = computed<number>(() => this._state().count);
+  readonly selectCartTotalItems = computed<number>(() =>
+    this._state().items.reduce((sum, it) => sum + it.quantity, 0),
+  );
 
   addItem(payload: AddItemPayload) {
     this._state.update((s) => cartReducer.addItem(s, payload));
